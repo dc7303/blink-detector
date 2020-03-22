@@ -5,6 +5,9 @@ This app can detect eye blinking. It also provides the recommended number of bli
 - python 3.x
 - macOS
 
+### Demonstration video
+![example](example.gif)
+
 ### Usage
 **Before running to application then check to installed `cmake` on your mac. If don't installed `cmake` then click link [Install cmake on Mac OSX](http://macappstore.org/cmake/)**
 
