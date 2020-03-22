@@ -6,14 +6,16 @@ This app can detect eye blinking. It also provides the recommended number of bli
 - macOS
 
 ### Usage
-**Be sure to use the default terminal provided by the Mac. If iTerm is used, the camera app can't be accessed.**
+**Before running to application then check to installed `cmake` on your mac. If don't installed `cmake` then click link [Install cmake on Mac OSX](http://macappstore.org/cmake/)**
 
-install third party library
+Install library
+
 ```bash
 $ pip install -r requirements.txt
 ```
 
-you can see the arguments
+You can see the arguments with the `-h` command
+
 ```bash
 $ python main.py -h
 
@@ -25,9 +27,16 @@ optional arguments:
                         show frame on your face
 ```
 
-run
+Running application
+
 ```bash
 $ python main.py
 // if you want to see the frame
 $ python main.py -v
 ```
+
+And if the message `"terminal" would like to access the camera` opens, just allow it.
+
+`System Preferences> Security & Privacy> Camera`.
+![allowedTerminal](allowedTerminal.png)
+
