@@ -32,6 +32,11 @@ predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
 
 
 def now():
+    """
+    get crreunt time data
+
+    return: string format time (%Y-%m-%d %H:%M:%S), floating point number time
+    """
     return datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), time.time()
 
 
@@ -78,7 +83,7 @@ def recommend_blink_cnt_per_min(m):
 def run():
     count = 0
     blink_count = 0
-    START_TIME, MS_START_TIME = now()
+    START_TIME, FPN_START_TIME = now()
 
     while True:
         _, frame = cap.read()
@@ -107,8 +112,8 @@ def run():
                         y = landmarks.part(n).y
                         cv2.circle(frame, (x, y), 3, RGB_BLUD, -1)
 
-                now_time, ms_now_time = now()
-                elasped_time = (ms_now_time - MS_START_TIME) / 60
+                now_time, fpn_now_time = now()
+                elasped_time = (fpn_now_time - FPN_START_TIME) / 60
                 cv2.putText(frame, "START: {}".format(START_TIME), (10, 30), DEFAULT_FONT, 0.7, RGB_GREEN, 2)
                 cv2.putText(frame, "TIME: {}".format(now_time), (10, 50), DEFAULT_FONT, 0.7, RGB_GREEN, 2)
                 cv2.putText(frame, "ELAPSED TIME: {} minute ".format(round(elasped_time, 2)), (10, 70), DEFAULT_FONT, 0.7, RGB_GREEN, 2)
