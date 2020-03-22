@@ -19,6 +19,7 @@ BLINK_CNT_PER_MS = 20
 RGB_RED = (0, 0, 255)
 RGB_BLUD = (255, 0, 0)
 RGB_GREEN = (0, 150, 0)
+RGB_WHITE = (255, 255, 255)
 DEFAULT_FONT = cv2.FONT_HERSHEY_SIMPLEX
 IS_VERBOSE = args["verbose"]
 
@@ -113,8 +114,10 @@ def run():
                 cv2.putText(frame, "ELAPSED TIME: {} minute ".format(round(elasped_time, 2)), (10, 70), DEFAULT_FONT, 0.7, RGB_GREEN, 2)
                 cv2.putText(frame, "BLINK: {}".format(blink_count), (10, 130), DEFAULT_FONT, 0.7, RGB_RED, 2)
                 cv2.putText(frame, "Recommended number of blinks: {}".format(recommend_blink_cnt_per_min(elasped_time)), (10, 150), DEFAULT_FONT, 0.7, RGB_RED, 2)
+                cv2.putText(frame, "EXIT: press 'q'", (10, 190), DEFAULT_FONT, 0.7, RGB_WHITE, 2)
         else:
-            cv2.putText(frame, "Not found your face in camera", (10, 30), DEFAULT_FONT, 0.7, RGB_RED, 2)
+            cv2.putText(frame, "Not found your face", (10, 30), DEFAULT_FONT, 0.7, RGB_RED, 2)
+            cv2.putText(frame, "EXIT: press 'q'", (10, 70), DEFAULT_FONT, 0.7, RGB_WHITE, 2)
 
         cv2.imshow("Blink Detector", frame)
         key = cv2.waitKey(1)

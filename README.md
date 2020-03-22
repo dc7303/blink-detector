@@ -40,3 +40,4 @@ And if the message `"terminal" would like to access the camera` opens, just allo
 `System Preferences> Security & Privacy> Camera`.
 ![allowedTerminal](allowedTerminal.png)
 
+When you want to exit program, press `q` key.
