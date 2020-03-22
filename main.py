@@ -4,12 +4,16 @@ import argparse
 import datetime
 import time
 import math
-from scipy.spatial import distance as dist
+from numpy import linalg
 from imutils import face_utils
 
 ap = argparse.ArgumentParser()
-ap.add_argument("-t", "--threshold", type=float, default=0.23, help="threshold to determine close eyes")
-ap.add_argument("-v", "--verbose", const=True, nargs='?', default=False, help="show frame on your face")
+threshold_msg = "Threshold to determine close eyes." \
+                " If it does not detect well," \
+                " adjust the threshold according to the size of the eyes." \
+                " (0.2 to 0.3 is recommended)"
+ap.add_argument("-t", "--threshold", type=float, default=0.23, help=threshold_msg)
+ap.add_argument("-v", "--verbose", const=True, nargs='?', default=False, help="Show frame on your face")
 
 args = vars(ap.parse_args())
 EYE_CONSEC_FRAMES = 3
@@ -51,9 +55,10 @@ def eye_ratio(eye):
     :param eye: shape
     :return: float
     """
-    A = dist.euclidean(eye[1], eye[5])  # p2 ~ p6
-    B = dist.euclidean(eye[2], eye[4])  # p3 ~ p5
-    C = dist.euclidean(eye[0], eye[3])  # p1 ~ p4
+    A = linalg.norm(eye[1] - eye[5])  # p2 ~ p6
+    B = linalg.norm(eye[2] - eye[4])  # p3 ~ p5
+    C = linalg.norm(eye[0] - eye[3])  # p1 ~ p4
+
     return (A + B) / (2.0 * C)
 
 
@@ -80,17 +85,34 @@ def recommend_blink_cnt_per_min(m):
     return math.ceil(m) * BLINK_CNT_PER_MS
 
 
+def draw_face_frame(frame, landmarks):
+    """
+    draw a face frame
+
+    :param frame:
+    :param landmarks:
+    :return: None
+    """
+    for n in range(0, 68):
+        x = landmarks.part(n).x
+        y = landmarks.part(n).y
+        cv2.circle(frame, (x, y), 3, RGB_BLUD, -1)
+
+
 def run():
+    """
+    main function
+
+    :return: None
+    """
     count = 0
     blink_count = 0
-    START_TIME, FPN_START_TIME = now()
+    start_time, fpn_start_time = now()
 
     while True:
         _, frame = cap.read()
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-
         faces = detector(gray)
-        # cv2.putText(frame, "BLINK: {}".format(blink_count), (10, 30), DEFAULT_FONT, 0.7, RGB_RED, 2)
 
         if len(faces) > 0:
             for face in faces:
@@ -107,14 +129,11 @@ def run():
 
                 # left eye ~ right eye
                 if IS_VERBOSE:
-                    for n in range(0, 68):
-                        x = landmarks.part(n).x
-                        y = landmarks.part(n).y
-                        cv2.circle(frame, (x, y), 3, RGB_BLUD, -1)
+                    draw_face_frame(frame, landmarks)
 
                 now_time, fpn_now_time = now()
-                elasped_time = (fpn_now_time - FPN_START_TIME) / 60
-                cv2.putText(frame, "START: {}".format(START_TIME), (10, 30), DEFAULT_FONT, 0.7, RGB_GREEN, 2)
+                elasped_time = (fpn_now_time - fpn_start_time) / 60
+                cv2.putText(frame, "START: {}".format(start_time), (10, 30), DEFAULT_FONT, 0.7, RGB_GREEN, 2)
                 cv2.putText(frame, "TIME: {}".format(now_time), (10, 50), DEFAULT_FONT, 0.7, RGB_GREEN, 2)
                 cv2.putText(frame, "ELAPSED TIME: {} minute ".format(round(elasped_time, 2)), (10, 70), DEFAULT_FONT, 0.7, RGB_GREEN, 2)
                 cv2.putText(frame, "BLINK: {}".format(blink_count), (10, 130), DEFAULT_FONT, 0.7, RGB_RED, 2)

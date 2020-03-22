@@ -25,7 +25,9 @@ $ python main.py -h
 optional arguments:
   -h, --help            show this help message and exit
   -t THRESHOLD, --threshold THRESHOLD
-                        threshold to determine close eyes
+                        Threshold to determine close eyes. If it does not
+                        detect well, adjust the threshold according to the
+                        size of the eyes. (0.2 to 0.3 is recommended)
   -v [VERBOSE], --verbose [VERBOSE]
                         show frame on your face
 ```
