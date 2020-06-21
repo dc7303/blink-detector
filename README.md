@@ -1,5 +1,5 @@
 ### About
-This app can detect eye blinking. It also provides the recommended number of blinks over time.
+This app can detect eyes blinking. It also provides the recommended number of blinks over time.
 
 ### Support
 - python 3.x
@@ -17,7 +17,7 @@ Install library
 $ pip install -r requirements.txt
 ```
 
-You can see the arguments with the `-h` command
+You can see the arguments with the `-h` option.
 
 ```bash
 $ python main.py -h
